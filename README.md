@@ -13,8 +13,6 @@ This repository does **not** contain the SASMaker framework itself. SASMaker is 
 ## Repository scope
 
 Included:
-
-Included:
 - Pre-generated PCAP files used in the evaluation
   - One dataset generated using SASMaker
   - A reference dataset from Biswas et al. (see full reference in `main/data/denial_of_service_reference/README.md`)
