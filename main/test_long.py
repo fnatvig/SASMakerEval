@@ -1,0 +1,74 @@
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import (confusion_matrix)
+import xgboost as xgb
+
+from feature_extraction import *
+
+# number of seconds
+wnd_size = 2
+
+df_sasmaker = pd.read_excel("./data/denial_of_service_SASMaker/xlsx/DOS_SASMaker.xlsx")
+df = pd.read_excel("./data/denial_of_service_reference/xlsx/AS1.xlsx")
+df_sasmaker = get_dos_features(df_sasmaker, wnd_size)
+df = get_dos_features(df, wnd_size)
+
+corr_sasmaker = df_sasmaker.corr(numeric_only=True)['label'].abs().sort_values(ascending=False)
+print(corr_sasmaker)
+corr = df.corr(numeric_only=True)['label'].abs().sort_values(ascending=False)
+print(corr)
+
+X_sasmaker = df_sasmaker.drop("label", axis=1)
+X_sasmaker = df_sasmaker.drop("wnd_goose_pkt_num_of_all_datSet", axis=1)
+y_sasmaker = df_sasmaker["label"]
+
+X = df.drop("label", axis=1)
+X = df.drop("wnd_goose_pkt_num_of_all_datSet", axis=1)
+y = df["label"]
+
+
+X_train_ref, X_test_ref, y_train_ref, y_test_ref = train_test_split(
+    X, y, test_size=0.2, random_state=42, shuffle=True)
+
+desired_train_size = len(X_train_ref)
+train_ratio = desired_train_size / len(X_sasmaker)
+
+X_train_sasmaker, _, y_train_sasmaker, _ = train_test_split(
+    X_sasmaker, y_sasmaker, train_size=train_ratio, random_state=42, shuffle=True
+)
+
+print("\nLEN_DF_ref = ", len(df))
+print("benign(DF_ref) = ", len(df[df["label"]==False]))
+print("malign(DF_ref) = ", len(df[df["label"]==True]))
+print("benign(y_train_ref) = ", len(y_train_ref[y_train_ref==False]))
+print("malign(y_train_ref) = ", len(y_train_ref[y_train_ref==True]))
+print("length of y_train_ref =", len(y_train_ref))
+
+print("\nLEN_DF_sasmaker = ", len(df_sasmaker))
+print("benign(DF_sasmaker) = ", len(df_sasmaker[df_sasmaker["label"]==False]))
+print("malign(DF_sasmaker) = ", len(df_sasmaker[df_sasmaker["label"]==True]))
+print("benign(y_train_sasmaker) = ", len(y_train_sasmaker[y_train_sasmaker==False]))
+print("malign(y_train_sasmaker) = ", len(y_train_sasmaker[y_train_sasmaker==True]))
+print("length of y_train_sasmaker =", len(y_train_sasmaker))
+
+model_sasmaker = xgb.XGBClassifier(n_estimators=200, max_depth=5, learning_rate=0.1, n_jobs=-1, random_state=42, eval_metric="logloss")
+model_ref = xgb.XGBClassifier(n_estimators=200, max_depth=5, learning_rate=0.1, n_jobs=-1, random_state=42, eval_metric="logloss")
+
+model_sasmaker.fit(X_train_sasmaker, y_train_sasmaker); model_ref.fit(X_train_ref, y_train_ref)
+
+y_pred_ref = model_ref.predict(X_test_ref)
+y_proba_ref = model_ref.predict_proba(X_test_ref)[:, 1]
+
+y_pred_sasmaker = model_sasmaker.predict(X_test_ref)
+y_proba_sasmaker = model_sasmaker.predict_proba(X_test_ref)[:, 1]
+tn, fp, fn, tp = confusion_matrix(y_test_ref, y_pred_ref).ravel().tolist()
+print("\nREFERENCE: ")
+print("TP = ", tp)
+print("FP = ", fp)
+print("FN = ", fn)
+print("TN = ", tn)
+tn, fp, fn, tp = confusion_matrix(y_test_ref, y_pred_sasmaker).ravel().tolist()
+print("\nSASMaker: ")
+print("TP = ", tp)
+print("FP = ", fp)
+print("FN = ", fn)
+print("TN = ", tn)
