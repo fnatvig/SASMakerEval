@@ -16,12 +16,14 @@ Create and activate the Python virtual environment using the provided setup scri
 
 ### Linux / macOS
 ```bash
-source ./setup_venv_linux.sh
+./setup_venv_linux.sh
+source venv/bin/activate
 ```
 
 ### Windows (PowerShell)
 ```ps
 .\setup_venv_win.bat
+.\venv\Scripts\Activate.ps1
 ```
 
 The scripts create a virtual environment and install all required dependencies listed in `requirements.txt`.
