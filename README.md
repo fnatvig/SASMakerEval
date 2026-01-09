@@ -2,7 +2,7 @@
 
 This repository contains code for reproducing some of the results in the paper: 
 
-SASMaker: A Framework for Generating Synthetic IEC 61850 Traffic from Diverse Substation Setups (submitted to CIGRE Paris Session 2026)
+**SASMaker: A Framework for Generating Synthetic IEC 61850 Traffic from Diverse Substation Setups** *(submitted to CIGRE Paris Session 2026)*
 
 ## Overview 
 
