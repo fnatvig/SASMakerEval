@@ -10,15 +10,15 @@ from xgboost.callback import EarlyStopping
 from feature_extraction import *
 
 # number of seconds
-# wnd_size = 2
+wnd_size = 2
 
-# df_raw = pd.read_excel("../data/denial_of_service/xlsx/AS1.xlsx")
-# df_pt_raw = pd.read_excel("../data/SASMaker_data/xlsx/DOS_SASMaker.xlsx")
-# df_pt = get_dos_features(df_pt_raw, wnd_size)
-# df_pt.to_excel("../data/SASMaker_data/preprocessed/DOS_SASMaker.xlsx", index=False)
+df_sasmaker = pd.read_excel("./data/denial_of_service_SASMaker/xlsx/DOS_SASMaker.xlsx")
+df = pd.read_excel("./data/denial_of_service_reference/xlsx/AS1.xlsx")
+df_sasmaker = get_dos_features(df_sasmaker, wnd_size)
+df = get_dos_features(df, wnd_size)
 
-df_sasmaker = pd.read_excel("../data/SASMaker_data/preprocessed/DOS_SASMaker.xlsx")
-df = pd.read_excel("../data/denial_of_service/preprocessed/AS1.xlsx")
+# df_sasmaker = pd.read_excel("./data/denial_of_service_SASMaker/preprocessed/DOS_SASMaker.xlsx")
+# df = pd.read_excel("./data/denial_of_service_reference/preprocessed/AS1.xlsx")
 
 corr = df_sasmaker.corr(numeric_only=True)['label'].abs().sort_values(ascending=False)
 # print(corr)
