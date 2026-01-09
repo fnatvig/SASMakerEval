@@ -44,6 +44,10 @@ if exist venv\Scripts\activate.bat (
     if exist requirements.txt (
         echo Installing dependencies from requirements.txt...
         pip install -r requirements.txt
+	echo
+	echo "Setup complete."
+	echo "To activate the environment, run:"
+	echo "  .\venv\Scripts\activate.ps1"
     ) else (
         echo No requirements.txt found. Skipping package installation.
     )

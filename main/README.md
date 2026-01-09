@@ -16,6 +16,7 @@ Create and activate the Python virtual environment using the provided setup scri
 
 ### Linux / macOS
 ```bash
+chmod +x setup_venv_linux.sh
 ./setup_venv_linux.sh
 source venv/bin/activate
 ```
