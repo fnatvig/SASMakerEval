@@ -2,8 +2,7 @@
 
 This directory contains the scripts and instructions required to reproduce the machine-learning evaluation results reported in the paper:
 
-**SASMaker: A Framework for Generating Synthetic IEC 61850 Traffic from Diverse Substation Setups**  
-(submitted to CIGRE Paris Session 2026)
+**SASMaker: A Framework for Generating Synthetic IEC 61850 Traffic from Diverse Substation Setups** *(submitted to CIGRE Paris Session 2026)*
 
 The evaluation operates on pre-extracted feature files derived from PCAP data. PCAP files are included for reference and traceability only and are not used directly by the evaluation scripts.
 
